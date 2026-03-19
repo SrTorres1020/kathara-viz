@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+
+# IDE and Editor Files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.env
+venv/
+env/
+.venv/
+.pytest_cache/
+
+# Kathara Temporary Files
+*.pcap
+logs/
