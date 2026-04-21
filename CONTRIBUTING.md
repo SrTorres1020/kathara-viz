@@ -1,1 +1,206 @@
-# Contributing to KatharaViz\n\nThank you for your interest in contributing to KatharaViz. This guide provides an overview of the development process and standards expected from all contributors.\n\n---\n\n## Table of Contents\n\n- [Code of Conduct](#code-of-conduct)\n- [Development Setup](#development-setup)\n  - [Prerequisites](#prerequisites)\n  - [Frontend Environment](#frontend-environment)\n  - [Bridge Server Environment](#bridge-server-environment)\n- [Development Guidelines](#development-guidelines)\n  - [JavaScript](#javascript)\n  - [Python](#python)\n- [Testing](#testing)\n  - [Frontend Testing](#frontend-testing)\n  - [Backend Testing](#backend-testing)\n- [Submitting Pull Requests](#submitting-pull-requests)\n- [Reporting Issues](#reporting-issues)\n\n---\n\n## Code of Conduct\n\nWe expect all contributors to adhere to professional etiquette. Treat everyone with respect and focus on technical merit and collaboration. Disrespectful behavior, harassment, or non-constructive communication will not be tolerated.\n\n---\n\n## Development Setup\n\n### Prerequisites\n\n- Git installed on your system\n- Python 3.8+ for the backend bridge\n- Node.js and npm for frontend testing (optional)\n- Docker installed and running (for live capture functionality)\n\n### Clone the Repository\n\n```bash\ngit clone https://github.com/SrTorres1020/kathara-viz.git\ncd kathara-viz\n```\n\n### Frontend Environment\n\nNo build tools (Webpack, Vite, etc.) are required. Simply serve the root directory over a local web server to support ES6 module loading:\n\n```bash\n# Serve via Python\npython -m http.server 8000\n\n# Or serve via Node.js\nnpx http-server -p 8000\n```\n\nAccess the application at `http://localhost:8000`.\n\n### Bridge Server Environment\n\n```bash\n# Install Python dependencies\npip install docker websockets\n\n# Start the bridge server with debug output\npython bridge/bridge.py --debug\n```\n\n---\n\n## Development Guidelines\n\n### JavaScript\n\n| Rule | Description |\n|------|-------------|\n| **Modules** | Use native ES6 Modules (`import` / `export`). |\n| **Architecture** | Maintain strict separation of concerns: core logic (`/src/core`), UI (`/src/ui`), and external integrations. |\n| **Dependencies** | Keep the project dependency-free for maximum longevity and minimal maintenance overhead. |\n| **Documentation** | Document complex logic using standard JSDoc comments. |\n| **Frameworks** | Avoid introducing arbitrary external frameworks without extensive justification. |\n\n### Python\n\n| Rule | Description |\n|------|-------------|\n| **Style** | Follow PEP 8 style guidelines. |\n| **Logging** | Use the standard `logging` module for all CLI and operational outputs. Do not use emojis, colors, or non-standard formatting in operational outputs. |\n| **Resources** | Ensure efficient resource management, proper thread lifecycle control, and WebSocket context management. |\n\n---\n\n## Testing\n\nKatharaViz uses automated testing to ensure stability across both the frontend and backend.\n\n### Frontend Testing\n\nThe frontend utilizes [Jest](https://jestjs.io/) to verify core logic (compilers, parsers, and physics math) completely isolated from the browser environment.\n\n```bash\n# Install dependencies\nnpm install\n\n# Run tests\nnpm test\n\n# Run tests with coverage\nnpm test -- --coverage\n```\n\n### Backend Testing\n\nThe bridge utilizes [Pytest](https://pytest.org/) to verify packet parsing, shell sessions, and Docker orchestrator behaviors.\n\n```bash\n# Navigate to bridge directory\ncd bridge\n\n# Install dependencies\npip install -r requirements.txt\n\n# Run tests\npython -m pytest tests/\n\n# Run tests with verbose output\npython -m pytest tests/ -v\n```\n\n---\n\n## Submitting Pull Requests\n\n### Branching Strategy\n\nCreate a feature branch off `main`:\n\n```bash\ngit checkout -b feature/your-feature-name\n```\n\nExamples:\n- `feature/websocket-reconnection`\n- `fix/memory-leak-terminal`\n- `docs/update-readme`\n\n### Commit Messages\n\nFollow the [Conventional Commits](https://www.conventionalcommits.org/) specification:\n\n| Type | Description |\n|------|-------------|\n| `feat:` | A new feature |\n| `fix:` | A bug fix |\n| `docs:` | Documentation only changes |\n| `style:` | Changes that do not affect the meaning of the code |\n| `refactor:` | Code change that neither fixes a bug nor adds a feature |\n| `test:` | Adding missing tests or correcting existing tests |\n| `chore:` | Changes to the build process or auxiliary tools |\n\nExamples:\n\n```bash\ngit commit -m \"feat: Add WebSocket reconnection with exponential backoff\"\ngit commit -m \"fix: Resolve memory leak in TerminalManager\"\ngit commit -m \"docs: Update README with troubleshooting section\"\n```\n\n### Pull Request Checklist\n\nBefore submitting a pull request, ensure:\n\n- [ ] Code follows the development guidelines\n- [ ] Tests pass for both frontend and backend\n- [ ] Documentation is updated if applicable\n- [ ] Commit messages follow Conventional Commits\n- [ ] Related issues are referenced (e.g., \"Closes #123\")\n\n### Pull Request Description\n\nInclude the following information:\n\n1. **Summary** - Brief description of the changes\n2. **Problem** - The issue being addressed\n3. **Solution** - Technical approach taken\n4. **Testing** - How the changes were tested\n5. **Screenshots** - If UI changes were made (optional)\n\n---\n\n## Reporting Issues\n\nWhen reporting issues, please include:\n\n- **Environment** - Operating system, Python version, browser version\n- **Steps to Reproduce** - Clear, numbered steps\n- **Expected Behavior** - What should happen\n- **Actual Behavior** - What actually happens\n- **Logs** - Relevant error messages or stack traces\n\n---\n\nThank you for contributing to KatharaViz!\n</parameter>
+# Contributing to KatharaViz
+
+Thank you for your interest in contributing to KatharaViz. This guide provides an overview of the development process and standards expected from all contributors.
+
+---
+
+## Table of Contents
+
+- [Code of Conduct](#code-of-conduct)
+- [Development Setup](#development-setup)
+  - [Prerequisites](#prerequisites)
+  - [Frontend Environment](#frontend-environment)
+  - [Bridge Server Environment](#bridge-server-environment)
+- [Development Guidelines](#development-guidelines)
+  - [JavaScript](#javascript)
+  - [Python](#python)
+- [Testing](#testing)
+  - [Frontend Testing](#frontend-testing)
+  - [Backend Testing](#backend-testing)
+- [Submitting Pull Requests](#submitting-pull-requests)
+- [Reporting Issues](#reporting-issues)
+
+---
+
+## Code of Conduct
+
+We expect all contributors to adhere to professional etiquette. Treat everyone with respect and focus on technical merit and collaboration. Disrespectful behavior, harassment, or non-constructive communication will not be tolerated.
+
+---
+
+## Development Setup
+
+### Prerequisites
+
+- Git installed on your system
+- Python 3.8+ for the backend bridge
+- Node.js and npm for frontend testing (optional)
+- Docker installed and running (for live capture functionality)
+
+### Clone the Repository
+
+```bash
+git clone https://github.com/SrTorres1020/kathara-viz.git
+cd kathara-viz
+```
+
+### Frontend Environment
+
+No build tools (Webpack, Vite, etc.) are required. Simply serve the root directory over a local web server to support ES6 module loading:
+
+```bash
+# Serve via Python
+python -m http.server 8000
+
+# Or serve via Node.js
+npx http-server -p 8000
+```
+
+Access the application at `http://localhost:8000`.
+
+### Bridge Server Environment
+
+```bash
+# Install Python dependencies
+pip install docker websockets
+
+# Start the bridge server with debug output
+python bridge/bridge.py --debug
+```
+
+---
+
+## Development Guidelines
+
+### JavaScript
+
+| Rule | Description |
+|------|-------------|
+| **Modules** | Use native ES6 Modules (`import` / `export`). |
+| **Architecture** | Maintain strict separation of concerns: core logic (`/src/core`), UI (`/src/ui`), and external integrations. |
+| **Dependencies** | Keep the project dependency-free for maximum longevity and minimal maintenance overhead. |
+| **Documentation** | Document complex logic using standard JSDoc comments. |
+| **Frameworks** | Avoid introducing arbitrary external frameworks without extensive justification. |
+
+### Python
+
+| Rule | Description |
+|------|-------------|
+| **Style** | Follow PEP 8 style guidelines. |
+| **Logging** | Use the standard `logging` module for all CLI and operational outputs. Do not use emojis, colors, or non-standard formatting in operational outputs. |
+| **Resources** | Ensure efficient resource management, proper thread lifecycle control, and WebSocket context management. |
+
+---
+
+## Testing
+
+KatharaViz uses automated testing to ensure stability across both the frontend and backend.
+
+### Frontend Testing
+
+The frontend utilizes [Jest](https://jestjs.io/) to verify core logic (compilers, parsers, and physics math) completely isolated from the browser environment.
+
+```bash
+# Install dependencies
+npm install
+
+# Run tests
+npm test
+
+# Run tests with coverage
+npm test -- --coverage
+```
+
+### Backend Testing
+
+The bridge utilizes [Pytest](https://pytest.org/) to verify packet parsing, shell sessions, and Docker orchestrator behaviors.
+
+```bash
+# Navigate to bridge directory
+cd bridge
+
+# Install dependencies
+pip install -r requirements.txt
+
+# Run tests
+python -m pytest tests/
+
+# Run tests with verbose output
+python -m pytest tests/ -v
+```
+
+---
+
+## Submitting Pull Requests
+
+### Branching Strategy
+
+Create a feature branch off `main`:
+
+```bash
+git checkout -b feature/your-feature-name
+```
+
+Examples:
+- `feature/websocket-reconnection`
+- `fix/memory-leak-terminal`
+- `docs/update-readme`
+
+### Commit Messages
+
+Follow the [Conventional Commits](https://www.conventionalcommits.org/) specification:
+
+| Type | Description |
+|------|-------------|
+| `feat:` | A new feature |
+| `fix:` | A bug fix |
+| `docs:` | Documentation only changes |
+| `style:` | Changes that do not affect the meaning of the code |
+| `refactor:` | Code change that neither fixes a bug nor adds a feature |
+| `test:` | Adding missing tests or correcting existing tests |
+| `chore:` | Changes to the build process or auxiliary tools |
+
+Examples:
+
+```bash
+git commit -m "feat: Add WebSocket reconnection with exponential backoff"
+git commit -m "fix: Resolve memory leak in TerminalManager"
+git commit -m "docs: Update README with troubleshooting section"
+```
+
+### Pull Request Checklist
+
+Before submitting a pull request, ensure:
+
+- [ ] Code follows the development guidelines
+- [ ] Tests pass for both frontend and backend
+- [ ] Documentation is updated if applicable
+- [ ] Commit messages follow Conventional Commits
+- [ ] Related issues are referenced (e.g., "Closes #123")
+
+### Pull Request Description
+
+Include the following information:
+
+1. **Summary** - Brief description of the changes
+2. **Problem** - The issue being addressed
+3. **Solution** - Technical approach taken
+4. **Testing** - How the changes were tested
+5. **Screenshots** - If UI changes were made (optional)
+
+---
+
+## Reporting Issues
+
+When reporting issues, please include:
+
+- **Environment** - Operating system, Python version, browser version
+- **Steps to Reproduce** - Clear, numbered steps
+- **Expected Behavior** - What should happen
+- **Actual Behavior** - What actually happens
+- **Logs** - Relevant error messages or stack traces
+
+---
+
+Thank you for contributing to KatharaViz!
+</parameter>
